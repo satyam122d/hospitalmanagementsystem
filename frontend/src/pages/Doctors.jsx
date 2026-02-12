@@ -1,64 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-const doctors = [
-  {
-    id: 1,
-    name: "Dr. Anita Sharma",
-    specialization: "Cardiologist",
-    experience: "10+ years experience",
-     availability: "Mon–Fri, 2:00 PM – 8:00 PM",
-    image:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e",
-  },
-  {
-    id: 2,
-    name: "Dr. Ananya Verma",
-    specialization: "Pediatrician",
-    experience: "8+ years experience",
-     availability: "Mon–wed, 2:00 PM – 8:00 PM",
-    image:
-      "https://images.unsplash.com/photo-1550831107-1553da8c8464",
-  },
-  {
-    id: 3,
-    name: "Dr. Amit Patel",
-    specialization: "General Physician",
-    experience: "12+ years experience",
-     availability: "Mon–Fri, 11:00 AM – 8:00 PM",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d",
-  },
-  {
-    id: 4,
-    name: "Dr. Neha Singh",
-    specialization: "Neurologist",
-    experience: "9+ years experience",
-     availability: "Wed–Fri, 12:00 AM – 8:00 PM",
-    image:
-      "https://images.unsplash.com/photo-1594824476967-48c8b964273f",
-  },
-  {
-    id: 5,
-    name: "Dr. Rohan Mehta",
-    specialization: "Orthopedic Surgeon",
-    experience: "11+ years experience",
-     availability: "Tue–Thu, 10:00 AM – 8:00 PM",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
-  },
-  {
-    id: 6,
-    name: "Dr. Pooja Nair",
-    specialization: "Gynecologist",
-    experience: "7+ years experience",
-     availability: "Mon–Fri, 2:00 PM – 8:00 PM",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661580574627-9211124e5c3f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZG9jdG9yfGVufDB8fDB8fHww",
-  },
-];
-
 export default function Doctors() {
-    const [searchTerm, setSearchTerm] = useState("");
+      const [doctors, setDoctors] = useState([]);
+      const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    fetch("http://localhost:8080/api/doctors")
+      .then((res) => res.json())
+      .then((data) => {
+        setDoctors(data);
+      })
+      .catch((err) => console.error("Error fetching doctors:", err));
+  }, []);
+
     const filteredDoctors = doctors.filter((doctor) =>
       `${doctor.name} ${doctor.specialization}`
         .toLowerCase()
@@ -95,12 +48,11 @@ export default function Doctors() {
            key={doctor.id}
            className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition"
          >
-           <img
-             src={doctor.image}
-             alt={doctor.name}
-             className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
-           />
-
+       <img
+         src="https://via.placeholder.com/150"
+         alt={doctor.name}
+         className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
+       />
            <h3 className="text-xl font-semibold text-gray-900">
              {doctor.name}
            </h3>
@@ -108,13 +60,8 @@ export default function Doctors() {
            <p className="text-teal-600 font-medium">
              {doctor.specialization}
            </p>
-
            <p className="text-gray-500 text-sm mt-2">
-             {doctor.experience}
-           </p>
-           <p className="text-sm text-gray-600 mt-3">
-             <span className="font-semibold text-gray-800">Availability:</span><br />
-             {doctor.availability}
+             Experienced Doctor
            </p>
          </div>
        ))}
