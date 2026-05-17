@@ -12,12 +12,16 @@ export default function Doctors() {
       .catch((err) => console.error("Error fetching doctors:", err));
   }, []);
 
-    const filteredDoctors = doctors.filter((doctor) =>
-      `${doctor.name} ${doctor.specialization}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
+const filteredDoctors = doctors.filter((doctor) => {
 
+  const search = searchTerm.toLowerCase();
+
+  return (
+    doctor.name.toLowerCase().includes(search) ||
+    doctor.specialization.toLowerCase().includes(search)
+  );
+
+});
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
@@ -41,7 +45,6 @@ export default function Doctors() {
             />
           </div>
         </div>
-     {/* Doctors Grid */}
      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
        {filteredDoctors.map((doctor)  => (
          <div
@@ -49,7 +52,7 @@ export default function Doctors() {
            className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition"
          >
        <img
-         src="https://via.placeholder.com/150"
+         src={doctor.imageurl}
          alt={doctor.name}
          className="w-32 h-32 mx-auto rounded-full object-cover mb-4"
        />
@@ -60,9 +63,17 @@ export default function Doctors() {
            <p className="text-teal-600 font-medium">
              {doctor.specialization}
            </p>
-           <p className="text-gray-500 text-sm mt-2">
-             Experienced Doctor
+           <p className="text-yellow-500 font-medium">
+             ⭐ {doctor.rating}
            </p>
+
+           <p className="text-gray-500 text-sm">
+             {doctor.experience} Years Experience
+           </p>
+           <p className="text-teal-600 font-semibold">
+             ₹{doctor.fee} Consultation
+           </p>
+
          </div>
        ))}
      </div>

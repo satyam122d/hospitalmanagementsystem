@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Eye, EyeOff } from 'lucide-react';
 
-export default function LoginModal({ onClose, onLogin }) {
+export default function LoginModal({ onClose, onLogin,onNavigate }) {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -100,11 +100,10 @@ const fetchUserProfile = async (token) => {
 };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">
+        <div className="flex justify-between items-center p-5 border-rounded">
+          <h2 className="text-4xl font-bold text-gray-900">
             {isLogin ? 'Login' : 'Sign Up'}
           </h2>
           <button
@@ -115,12 +114,11 @@ const fetchUserProfile = async (token) => {
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Name (Signup only) */}
+           <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {!isLogin && (
+
             <div>
-              <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+              <label htmlFor="name" className="block text-gray-700 font-semibold mb-1">
                 Full Name *
               </label>
               <input
@@ -131,14 +129,12 @@ const fetchUserProfile = async (token) => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="Enter your full name"
               />
             </div>
           )}
 
-          {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+            <label htmlFor="email" className="block text-gray-700 font-semibold mb-1">
               Email Address *
             </label>
             <input
@@ -149,16 +145,14 @@ const fetchUserProfile = async (token) => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="your.email@example.com"
+
             />
           </div>
-
-          {/* Phone (Signup only) */}
           {!isLogin && (
             <div>
                 <label
                   htmlFor="phone"
-                  className="block text-gray-700 font-semibold mb-2"
+                  className="block text-gray-700 font-semibold mb-1"
                 >
                   Phone Number *
                 </label>
@@ -178,14 +172,12 @@ const fetchUserProfile = async (token) => {
                   inputMode="numeric"
                   pattern="[0-9]{10}"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Enter 10-digit number"
+
                 />
               </div>
           )}
-
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block text-gray-700 font-semibold mb-2">
+          <div >
+            <label htmlFor="password" className="block text-gray-700 font-semibold mb-1">
               Password *
             </label>
             <div className="relative">
@@ -196,17 +188,48 @@ const fetchUserProfile = async (token) => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="Enter your password"
+                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/3 transform -translate-y-1/3 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? <Eye className="w-7 h-5" /> : <EyeOff className="w-7 h-5" />}
               </button>
+
+
+<div className="h-2 mt-2">
+  {isLogin && (
+    <p
+      style={{ cursor: "pointer", color: "black" }}
+      onClick={() => {
+        onClose();
+        onNavigate("forgot-password");
+      }}
+    >
+      Forgot Password?
+    </p>
+  )}
+</div>
+
             </div>
+            {!isLogin && (
+            <div className="bg-gray-100 rounded-xl p-4 text-sm text-gray-600">
+
+                            <p className="font-semibold mb-2">
+                              Password must:
+                            </p>
+
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Be at least 8 characters long</li>
+                              <li>Include uppercase and lowercase letters</li>
+                              <li>Include at least one number</li>
+                               <li>Include at least special characters</li>
+                            </ul>
+                          </div>
+                          )}
+
           </div>
 {error && (
             <div className="bg-red-50 text-red-600 px-4 py-2 rounded text-sm">
@@ -214,16 +237,15 @@ const fetchUserProfile = async (token) => {
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-teal-600 text-white px-6 py-3 rounded-md hover:bg-teal-700 transition-colors font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
+             className="w-full bg-teal-600 text-white px-6 py-3 rounded-md hover:bg-teal-700 transition-colors font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
             {isLogin ? 'Login' : 'Sign Up'}
           </button>
 
-          {/* Toggle Mode */}
+
           <div className="text-center">
             <button
               type="button"
@@ -234,9 +256,12 @@ const fetchUserProfile = async (token) => {
                 ? "Don't have an account? Sign Up"
                 : 'Already have an account? Login'}
             </button>
+
           </div>
         </form>
       </div>
     </div>
   );
+
 }
+

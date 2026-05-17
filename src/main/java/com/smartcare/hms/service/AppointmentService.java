@@ -29,7 +29,7 @@ public class AppointmentService {
 
     }
     @Transactional
-    public Appointment createAppointment(Appointment appointment) {
+    public Appointment createAppointment(Appointment appointment, String doctorName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("AUTH OBJECT = " + auth);
 
@@ -40,6 +40,8 @@ public class AppointmentService {
 
         appointment.setPatientId(user.getId());
         appointment.setStatus("BOOKED");
+
+        appointment.setDoctorName(doctorName);
 
         boolean slotBooked =
                 appointmentRepo.existsByDoctorIdAndAppointmentDateAndAppointmentTime(

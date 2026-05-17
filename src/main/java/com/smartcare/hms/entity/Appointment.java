@@ -37,6 +37,17 @@ public class Appointment {
 
     private String status="BOOKED";
 
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    @Column(name = "doctorname")
+    private String doctorName;
+
     public Long getId() {
         return id;
     }

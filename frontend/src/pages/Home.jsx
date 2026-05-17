@@ -361,9 +361,6 @@ export default function Home() {
         <div className="w-24 h-24 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full mx-auto mb-4 flex items-center justify-center">
           <span className="text-white text-4xl font-bold">👨‍⚕️</span>
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          Experienced Doctors
-        </h3>
         <p className="text-gray-600">
           Highly qualified doctors with years of clinical expertise
         </p>

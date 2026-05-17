@@ -21,6 +21,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     @Autowired
     private AppointmentRepo appointmentRepo;
+    private String doctorName;
+
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
@@ -32,7 +34,7 @@ public class AppointmentController {
     public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
         try {
             return ResponseEntity.ok(
-                    appointmentService.createAppointment(appointment)
+                    appointmentService.createAppointment(appointment, doctorName)
             );
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -92,7 +94,7 @@ public class AppointmentController {
     public List<Appointment> getMyAppointments(
             @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
 
-        String email = user.getUsername(); // from JWT
+        String email = user.getUsername();
 
         User loggedInUser = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
