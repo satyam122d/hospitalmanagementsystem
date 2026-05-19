@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva } from "class-variance-authority";
 
@@ -55,3 +56,15 @@ function Button({
 }
 
 export { Button, buttonVariants }
+=======
+export function Button({ children, className = "", ...props }) {
+  return (
+    <button
+      className={`bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101

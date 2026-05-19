@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -18,3 +19,12 @@ function Label({
 }
 
 export { Label }
+=======
+export function Label({ children }) {
+  return (
+    <label className="text-sm font-medium">
+      {children}
+    </label>
+  );
+}
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101

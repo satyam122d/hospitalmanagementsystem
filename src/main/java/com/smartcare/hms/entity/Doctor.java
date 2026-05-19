@@ -94,5 +94,8 @@ public class Doctor {
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101
 }

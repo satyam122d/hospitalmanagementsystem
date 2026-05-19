@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 
@@ -21,3 +22,13 @@ function Input({
 }
 
 export { Input }
+=======
+export function Input({ className = "", ...props }) {
+  return (
+    <input
+      className={`border border-gray-300 rounded-lg px-4 py-3 w-full outline-none focus:ring-2 focus:ring-teal-500 ${className}`}
+      {...props}
+    />
+  );
+}
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101

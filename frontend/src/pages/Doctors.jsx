@@ -14,6 +14,7 @@ export default function Doctors({setPage,setSelectedDoctor,setSelectedReason}){
       .catch((err) => console.error("Error fetching doctors:", err));
   }, []);
 
+<<<<<<< HEAD
 const handleSearch = async (value) => {
 
   setSearchTerm(value);
@@ -72,6 +73,18 @@ const fetchSuggestions = async (value) => {
   }
 
 };
+=======
+const filteredDoctors = doctors.filter((doctor) => {
+
+  const search = searchTerm.toLowerCase();
+
+  return (
+    doctor.name.toLowerCase().includes(search) ||
+    doctor.specialization.toLowerCase().includes(search)
+  );
+
+});
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
@@ -154,6 +167,7 @@ const fetchSuggestions = async (value) => {
            <p className="text-teal-600 font-semibold">
              ₹{doctor.fee} Consultation
            </p>
+<<<<<<< HEAD
 <button
   onClick={() =>{
     setPage("book-appointment");
@@ -164,6 +178,9 @@ const fetchSuggestions = async (value) => {
 >
   Book Appointment
 </button>
+=======
+
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101
          </div>
        ))}
      </div>

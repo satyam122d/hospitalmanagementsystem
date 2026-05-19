@@ -29,10 +29,16 @@ public class AppointmentService {
 
     }
     @Transactional
+<<<<<<< HEAD
     public Appointment createAppointment(
             Appointment appointment,
             String doctorName
     ) {
+=======
+    public Appointment createAppointment(Appointment appointment, String doctorName) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("AUTH OBJECT = " + auth);
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101
 
         Authentication auth =
                 SecurityContextHolder
@@ -78,6 +84,8 @@ public class AppointmentService {
         appointment.setDoctorName(
                 doctorNameFromDb
         );
+
+        appointment.setDoctorName(doctorName);
 
         boolean slotBooked =
                 appointmentRepo

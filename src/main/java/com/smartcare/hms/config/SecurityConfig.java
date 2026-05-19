@@ -43,6 +43,10 @@ public class SecurityConfig {
                         .requestMatchers("/forgot-password").permitAll()
                         .requestMatchers("/reset-password").permitAll()
                         .requestMatchers("/users/me").authenticated()
+<<<<<<< HEAD
+=======
+                        .requestMatchers("/api/doctors", "/api/doctors/search","/api/doctors/*/available-dates","/api/doctors/*/available-slots","/forgot-password","/reset-password").permitAll()
+>>>>>>> 433fb6fa1e9f9055837c0c0f5d2122461eaa1101
                         .anyRequest().authenticated()
                 )
 
