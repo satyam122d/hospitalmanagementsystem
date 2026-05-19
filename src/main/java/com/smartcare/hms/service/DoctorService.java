@@ -6,8 +6,6 @@ import com.smartcare.hms.entity.DoctorAvailability;
 import com.smartcare.hms.repository.AppointmentRepo;
 import com.smartcare.hms.repository.DoctorAvailabilityRepo;
 import com.smartcare.hms.repository.DoctorRepo;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 import { useState ,useEffect} from "react";
 
 import Navbar from "./components/Navbar";
-
 import Home from "./pages/Home";
 import Doctors from "./pages/Doctors";
 import BookAppointment from "./pages/BookAppointment";
@@ -9,15 +8,16 @@ import AppointmentStatus from "./pages/AppointmentStatus";
 import Contact from "./pages/Contact";
 import LoginModal from "./components/LoginModal";
 import Profile from "./pages/Profile";
-
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 function App() {
-  const [page, setPage] = useState("home");
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [page, setPage] = useState("home");
+ const [showLoginModal, setShowLoginModal] = useState(false);
+ const [user, setUser] = useState(null);
+ const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [authLoading, setAuthLoading] = useState(true);
-
-
+const [selectedDoctor, setSelectedDoctor] =  useState(null);
+const [selectedReason, setSelectedReason] = useState("");
    const handleLogin = (token, userData) => {
      localStorage.setItem("token", token);
      localStorage.setItem("user", JSON.stringify(userData));
@@ -42,7 +42,6 @@ const openLoginModal = () => {
 const closeModal = () => {
   setShowLoginModal(false);
 };
-``
 
 useEffect(() => {
   const token = localStorage.getItem("token");
@@ -82,41 +81,63 @@ useEffect(() => {
   const renderPage = () => {
     switch (page) {
       case "doctors":
-        return <Doctors />;
-      case "book":
-        return <BookAppointment />;
+        return  <Doctors
+                   setPage={setPage}
+                   setSelectedDoctor={setSelectedDoctor}
+                   setSelectedReason={setSelectedReason}
+                 />;
+                 case "book-appointment":
+                   return <BookAppointment
+                   selectedDoctor={selectedDoctor}
+                   selectedReason={selectedReason}/>;
       case "status":
         return <AppointmentStatus />;
       case "contact":
         return <Contact />;
         case "profile":
           return <Profile onLogout={handleLogout} />;
+          case "reset-password":
+            return (
+              <ResetPassword
+                setPage={setPage}
+                openLoginModal={openLoginModal}
+              />
+            );
+        case "forgot-password":
+           return <ForgotPassword setPage={setPage} />;
+
 
       default:
         return <Home />;
     }
+
   };
 
   return (
     <>
-      <Navbar
-       onNavigate={handleNavigate}
-        onLoginClick={openLoginModal}
-        isLoggedIn={isLoggedIn}
-        user={user}
-      />
+     {page !== "forgot-password" &&
+      page !== "reset-password" && (
 
+       <Navbar
+         onNavigate={handleNavigate}
+         onLoginClick={openLoginModal}
+         isLoggedIn={isLoggedIn}
+         user={user}
+       />
+
+     )}
       {renderPage()}
 
       {showLoginModal && (
        <LoginModal
          onClose={closeModal}
          onLogin={handleLogin}
+         onNavigate={handleNavigate}
        />
-
       )}
     </>
   );
+
 }
 
 export default App;

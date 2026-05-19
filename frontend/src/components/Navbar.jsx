@@ -38,7 +38,6 @@ export default function Navbar({ onNavigate, onLoginClick, isLoggedIn, user }) {
           <nav className="hidden md:flex items-center gap-2 text-gray-700 font-medium">
             <span className={navItemClass("home")} onClick={() => handleNav("home")}>Home</span>
             <span className={navItemClass("doctors")} onClick={() => handleNav("doctors")}>Doctors</span>
-            <span className={navItemClass("book")} onClick={() => handleNav("book")}>Book Appointment</span>
             <span className={navItemClass("status")} onClick={() => handleNav("status")}>Appointment Status</span>
             <span className={navItemClass("contact")} onClick={() => handleNav("contact")}>Contact</span>
           </nav>
@@ -71,7 +70,6 @@ export default function Navbar({ onNavigate, onLoginClick, isLoggedIn, user }) {
               </button>
             )}
 
-            {/* Mobile Menu Button */}
             <button
               className="md:hidden"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -82,13 +80,12 @@ export default function Navbar({ onNavigate, onLoginClick, isLoggedIn, user }) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+
       {menuOpen && (
         <div className="md:hidden bg-white border-t shadow-sm">
           <nav className="flex flex-col px-4 py-3 text-gray-700 font-medium">
             <span className={navItemClass("home")} onClick={() => handleNav("home")}>Home</span>
             <span className={navItemClass("doctors")} onClick={() => handleNav("doctors")}>Doctors</span>
-            <span className={navItemClass("book")} onClick={() => handleNav("book")}>Book Appointment</span>
             <span className={navItemClass("status")} onClick={() => handleNav("status")}>Appointment Status</span>
             <span className={navItemClass("contact")} onClick={() => handleNav("contact")}>Contact</span>
 
