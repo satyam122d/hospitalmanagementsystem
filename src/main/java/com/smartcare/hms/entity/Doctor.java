@@ -2,24 +2,75 @@ package com.smartcare.hms.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "doctors")
 public class Doctor {
+    public List<String> getKeywords() {
+        return keywords;
+    }
 
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    @ElementCollection
+    private List<String> keywords;
+
+    public List<String> getReasons() {
+        return reasons;
+    }
+
+    public void setReasons(List<String> reasons) {
+        this.reasons = reasons;
+    }
+
+    @ElementCollection
+    private List<String> reasons;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String name;
-
     private String specialization;
+    private int experience;
+    private double rating;
+    public double getRating() {
+        return rating;
+    }
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 
-    @Column(nullable = false)
-    private String password;
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+    private double fee;
+
+    private String imageurl;
 
     public Long getId() {
         return id;
@@ -40,24 +91,8 @@ public class Doctor {
     public String getSpecialization() {
         return specialization;
     }
-
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

@@ -37,4 +37,23 @@ public class DoctorController {
     ) {
         return doctorService.getAvailableTimeSlots(doctorId, date);
     }
+    @GetMapping("/suggestions")
+    public List<String> getSuggestions(
+            @RequestParam String keyword
+    ) {
+
+        return doctorService
+                .getSuggestions(keyword);
+
+    }
+    @GetMapping("/{id}/reasons")
+    public List<String> getReasons(
+            @PathVariable Long id
+    ){
+
+        Doctor doctor =
+                doctorService.getDoctorById(id);
+
+        return doctor.getReasons();
+    }
 }

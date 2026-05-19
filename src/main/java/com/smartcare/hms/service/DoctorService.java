@@ -6,9 +6,12 @@ import com.smartcare.hms.entity.DoctorAvailability;
 import com.smartcare.hms.repository.AppointmentRepo;
 import com.smartcare.hms.repository.DoctorAvailabilityRepo;
 import com.smartcare.hms.repository.DoctorRepo;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,19 +35,169 @@ public class DoctorService {
     }
     public List<Doctor> searchDoctorsByProblem(String problem) {
 
-        String specialization;
+        String search =
+                problem.toLowerCase().trim();
 
-        String p = problem.toLowerCase();
+        List<Doctor> doctors =
+                doctorRepo.findAll();
 
-        if (p.contains("fever") || p.contains("cold")) {
-            specialization = "General Physician";
-        } else if (p.contains("heart") || p.contains("chest")) {
-            specialization = "Cardiologist";
-        } else {
-            specialization = "General Physician";
+        // STEP 1: Exact/full phrase match
+        List<Doctor> exactMatches = doctors.stream()
+
+                .filter(doctor ->
+
+                        doctor.getKeywords().stream()
+
+                                .anyMatch(keyword ->
+
+                                        keyword.toLowerCase()
+
+                                                .contains(search)
+
+                                )
+
+                )
+
+                .collect(Collectors.toList());
+        if (!exactMatches.isEmpty()) {
+
+            return exactMatches;
         }
+        return doctors.stream()
 
-        return doctorRepo.findBySpecializationIgnoreCase(specialization);
+                .filter(doctor ->
+
+                        doctor.getKeywords().stream()
+
+                                .anyMatch(keyword -> {
+
+                                    String lowerKeyword =
+                                            keyword.toLowerCase();
+
+                                    return Arrays.stream(
+                                                    search.split(" ")
+                                            )
+
+                                            .filter(word ->
+                                                    word.length() > 3
+                                            )
+
+                                            .anyMatch(word ->
+
+                                                    lowerKeyword.contains(
+                                                            word.toLowerCase()
+                                                    )
+
+                                            );
+
+                                })
+
+                )
+
+                .collect(Collectors.toList());
+
+    }
+    public List<String> getSuggestions(String keyword) {
+
+        List<String> suggestions = Arrays.asList(
+
+                "chest pain",
+                "heart palpitations",
+                "high blood pressure",
+                "shortness of breath",
+                "irregular heartbeat",
+                "heart checkup",
+
+                "skin rash",
+                "skin allergy",
+                "acne treatment",
+                "itching problem",
+                "hair fall",
+                "dry skin",
+
+                "migraine",
+                "headache",
+                "dizziness",
+                "nerve pain",
+                "memory problem",
+                "seizure symptoms",
+
+                "bone fracture",
+                "joint pain",
+                "knee pain",
+                "back pain",
+                "shoulder injury",
+                "muscle pain",
+
+                "child fever",
+                "baby vaccination",
+                "child cough",
+                "pediatric consultation",
+                "child weakness",
+                "newborn checkup",
+
+                "eye pain",
+                "blurred vision",
+                "eye redness",
+                "vision problem",
+                "dry eyes",
+                "eye irritation",
+
+                "pregnancy consultation",
+                "menstrual pain",
+                "pcos symptoms",
+                "hormonal issues",
+                "women health checkup",
+                "pregnancy care",
+
+                "ear pain",
+                "throat infection",
+                "sinus problem",
+                "hearing issue",
+                "nose blockage",
+                "tonsil pain",
+
+                "anxiety",
+                "stress",
+                "depression symptoms",
+                "sleep disorder",
+                "panic attacks",
+                "mental health consultation",
+
+                "urine infection",
+                "kidney stone",
+                "frequent urination",
+                "bladder problem",
+                "pain while urinating",
+                "urology consultation",
+
+                "diabetes checkup",
+                "thyroid problem",
+                "hormonal imbalance",
+                "weight gain",
+                "fatigue",
+                "sugar level check",
+
+                "fever",
+                "body weakness",
+                "cold and cough",
+                "viral infection",
+                "stomach pain",
+                "general consultation"
+
+        );
+
+        return suggestions.stream()
+
+                .filter(item ->
+                        item.toLowerCase()
+                                .contains(keyword.toLowerCase())
+                )
+
+                .limit(5)
+
+                .collect(Collectors.toList());
+
     }
     public List<LocalDate> getAvailableDates(Long doctorId) {
         return availabilityRepo.findByDoctorId(doctorId)
@@ -52,7 +205,6 @@ public class DoctorService {
                 .map(DoctorAvailability::getAvailableDate)
                 .toList();
     }
-
     public List<LocalTime> getAvailableTimeSlots(Long doctorId, LocalDate date) {
 
         boolean isDateAvailable = availabilityRepo
@@ -63,8 +215,6 @@ public class DoctorService {
         if (!isDateAvailable) {
             return List.of();
         }
-
-        // working hours
         LocalTime start = LocalTime.of(10, 0);
         LocalTime end = LocalTime.of(13, 0);
         int slotMinutes = 30;
@@ -87,5 +237,15 @@ public class DoctorService {
 
         return slots;
     }
+    public Doctor getDoctorById(Long id) {
 
+        return doctorRepo.findById(id)
+
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Doctor not found"
+                        )
+                );
+
+    }
 }

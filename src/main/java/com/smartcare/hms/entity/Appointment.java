@@ -21,6 +21,16 @@ public class Appointment {
     @Column(name = "patient_id", nullable = false)
     private Long patientId;
 
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    private String patientName;
+
     @Column(name = "doctor_id", nullable = false)
     private Long doctorId;
 
@@ -36,6 +46,17 @@ public class Appointment {
     private String reason;
 
     private String status="BOOKED";
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    @Column(name = "doctorname")
+    private String doctorName;
 
     public Long getId() {
         return id;

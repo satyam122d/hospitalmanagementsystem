@@ -37,11 +37,12 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/doctors").permitAll()
+                        .requestMatchers("/api/doctors/**").permitAll()
                         .requestMatchers("/appointments/status/**").permitAll()
                         .requestMatchers("/appointments/patient/**").permitAll()
+                        .requestMatchers("/forgot-password").permitAll()
+                        .requestMatchers("/reset-password").permitAll()
                         .requestMatchers("/users/me").authenticated()
-                        .requestMatchers("/api/doctors", "/api/doctors/search","/api/doctors/*/available-dates","/api/doctors/*/available-slots").permitAll()
                         .anyRequest().authenticated()
                 )
 

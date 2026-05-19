@@ -29,38 +29,81 @@ public class AppointmentService {
 
     }
     @Transactional
-    public Appointment createAppointment(Appointment appointment) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("AUTH OBJECT = " + auth);
+    public Appointment createAppointment(
+            Appointment appointment,
+            String doctorName
+    ) {
 
-        String email = auth.getName(); // from JWT
+        Authentication auth =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
 
-        User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        String email =
+                auth.getName();
 
-        appointment.setPatientId(user.getId());
-        appointment.setStatus("BOOKED");
+        User user =
+                userRepo.findByEmail(email)
+
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "User not found"
+                                )
+                        );
+
+        appointment.setPatientId(
+                user.getId()
+        );
+        appointment.setPatientName(
+                user.getName()
+        );
+
+        appointment.setStatus(
+                "BOOKED"
+        );
+
+        String doctorNameFromDb =
+                doctorRepo.findById(
+                                appointment.getDoctorId()
+                        )
+
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Doctor not found"
+                                )
+                        )
+
+                        .getName();
+
+        appointment.setDoctorName(
+                doctorNameFromDb
+        );
 
         boolean slotBooked =
-                appointmentRepo.existsByDoctorIdAndAppointmentDateAndAppointmentTime(
-                        appointment.getDoctorId(),
-                        appointment.getAppointmentDate(),
-                        appointment.getAppointmentTime()
-                );
+                appointmentRepo
+                        .existsByDoctorIdAndAppointmentDateAndAppointmentTime(
+                                appointment.getDoctorId(),
+                                appointment.getAppointmentDate(),
+                                appointment.getAppointmentTime()
+                        );
 
-        if (slotBooked) {
-            throw new RuntimeException("Slot already booked");
+        if(slotBooked){
+
+            throw new RuntimeException(
+                    "Slot already booked"
+            );
+
         }
-        try {
-            Appointment saved = appointmentRepo.save(appointment);
 
-            String tokenNumber = "APT" + saved.getId();
-            saved.setTokenNumber(tokenNumber);
+        Appointment saved =
+                appointmentRepo.save(appointment);
+        String tokenNumber =
+                "APT" + saved.getId();
+        saved.setTokenNumber(tokenNumber);
+        saved = appointmentRepo.save(saved);
 
-            return saved ;
-        } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("This time slot is already booked");
-        }
+        return saved;
+
     }
 
     public List<Appointment> getAllAppointments() {
